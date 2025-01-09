@@ -31,15 +31,22 @@ jobs:
         run: |
           curl -s "https://get.sdkman.io" | bash
 
-      - name: Install graalvm
+      - name: Install GraalVM and Native Image
         run: |
-          source "/home/runner/.sdkman/bin/sdkman-init.sh"
-          sdk install java 17.0.12-graal
+          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-linux-amd64-22.3.0.tar.gz
+          tar -xvzf graalvm-ce-java17-linux-amd64-22.3.0.tar.gz
+          sudo mv graalvm-ce-java17-22.3.0 /opt/graalvm
+          export PATH=/opt/graalvm/bin:$PATH
+          gu install native-image
+
+      - name: Build native image
+        run: |
+          mvn clean package -Pnative
 
       - name: Run native-image
         run: |
-          native-image -jar target/helloworld-1.0.0.jar
+          ./target/helloworld-1.0.0.jar
 
-      - name: Build image
-        id: build-image
-        run: docker build .
+      # - name: Build image
+      #   id: build-image
+      #   run: docker build .
