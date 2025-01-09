@@ -27,23 +27,15 @@ jobs:
       - name: Build
         run: mvn clean install -DskipITs=true -DskipTests=true 
 
-      - name: Install GraalVM and Native Image
-        run: |
-          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/graalvm-ce-java17-linux-amd64-22.3.0.tar.gz
-          tar -xvzf graalvm-ce-java17-linux-amd64-22.3.0.tar.gz
-          sudo mv graalvm-ce-java17-22.3.0 /opt/graalvm
-          export PATH=/opt/graalvm/bin:$PATH
-          /opt/graalvm/bin/gu install native-image
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '17'
+          distribution: 'graalvm'
+          native-image-job-reports: 'true'
 
-      - name: Verify GraalVM Installation
+      - name: Build and run HelloWorld.java
         run: |
-          # Verify GraalVM and native-image installation
-          java -version
-          native-image --version
-
-      - name: Build native image
-        run: |
-          native-image -jar helloworld-1.0.0.jar
+          native-image -jar target/helloworld-1.0.0.jar
 
       - name: Build image
         id: build-image
