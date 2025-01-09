@@ -36,6 +36,10 @@ jobs:
           source "/home/runner/.sdkman/bin/sdkman-init.sh"
           sdk install java 17.0.12-graal
 
+      - name: Run native-image
+        run: |
+          native-image -jar target/helloworld-1.0.0.jar
+
       - name: Build image
         id: build-image
         run: docker build .
