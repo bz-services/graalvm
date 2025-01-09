@@ -27,6 +27,14 @@ jobs:
       - name: Build
         run: mvn clean install -DskipITs=true -DskipTests=true 
 
+      - name: Install sdkman
+        run: |
+          curl -s "https://get.sdkman.io" | bash
+
+      - name: Install graalvm
+        run: |
+          source "/home/runner/.sdkman/bin/sdkman-init.sh"
+          sdk install java 17.0.12-graal
 
       - name: Build image
         id: build-image
