@@ -26,6 +26,12 @@
           <artifactId>spring-boot-starter-test</artifactId>
           <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.graalvm.buildtools</groupId>
+        <artifactId>native-maven-plugin</artifactId>
+        <version>0.9.0</version>
+        <scope>provided</scope>
+      </dependency>
   </dependencies>
 
   <build>
